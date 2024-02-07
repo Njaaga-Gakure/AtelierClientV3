@@ -14,9 +14,9 @@ const PageButtons: FC<PageButtonsProp> = ({
 }) => {
   return (
     <Wrapper className="page__buttons">
-      <button className="prev__btn">
+      {/* <button className="prev__btn">
         <FaChevronLeft />
-      </button>
+      </button> */}
       {pageList.map((page) => {
         return (
           <button
@@ -32,9 +32,9 @@ const PageButtons: FC<PageButtonsProp> = ({
           </button>
         );
       })}
-      <button className="next__btn">
+      {/* <button className="next__btn">
         <FaChevronRight />
-      </button>
+      </button> */}
     </Wrapper>
   );
 };
@@ -44,6 +44,9 @@ export default PageButtons;
 const Wrapper = styled.div`
   display: flex;
   gap: 0.5rem;
+  background-color: var(--primary-100);
+  padding: 0.75rem 1rem;
+  border-radius: 5px;
   .prev__btn,
   .next__btn {
     display: flex;

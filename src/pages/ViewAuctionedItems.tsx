@@ -20,13 +20,15 @@ const ViewAuctionedItems = () => {
         quote="Art is never finished, only abandoned"
       />
       <MyAuctionsGrid />
-      <div className="content__center page__btn--center">
-        <PageButtons
-          pageList={pageNumbers(sellerProductsCount)}
-          handlePageChange={handlePageChange}
-          pageNumber={sellerPageNumber}
-        />
-      </div>
+      {sellerProductsCount > 10 && (
+        <div className="content__center page__btn--center">
+          <PageButtons
+            pageList={pageNumbers(sellerProductsCount)}
+            handlePageChange={handlePageChange}
+            pageNumber={sellerPageNumber}
+          />
+        </div>
+      )}
     </Wrapper>
   );
 };

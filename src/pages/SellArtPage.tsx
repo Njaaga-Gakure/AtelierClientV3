@@ -58,12 +58,9 @@ const SellArtPage = () => {
       return;
     }
     const currentDateTime: Date = new Date();
-    const oneHourLater = new Date(currentDateTime.getTime() + 60 * 60 * 1000);
 
-    if (endTime <= oneHourLater) {
-      toast.error(
-        "End time must be at least an hour from the time product is added"
-      );
+    if (endTime <= currentDateTime) {
+      toast.error("End time cannot be lower than the current time");
       return;
     }
     dispatch(addProduct({ ...newProduct, startPrice: Number(startPrice) }));

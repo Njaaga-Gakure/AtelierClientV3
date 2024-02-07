@@ -5,6 +5,7 @@ import { Loading } from ".";
 import { priceFormatter } from "../utils/helperFunctions";
 import { useEffect } from "react";
 import { fetchSellerProducts } from "../features/product/productSlice";
+import { Link } from "react-router-dom";
 
 const MyAuctionsGrid = () => {
   const dispatch = useAppDispatch();
@@ -27,7 +28,14 @@ const MyAuctionsGrid = () => {
         {isLoading ? (
           <Loading />
         ) : isError ? (
-          <p className="error"> something went wrong... :(</p>
+          <p className="error">something went wrong... :(</p>
+        ) : sellerProducts.length === 0 ? (
+          <div className="not-found">
+            <p className="error">You have no products up for auction.. :(</p>
+            <Link to="/sell" className="btn btn--secondary">
+              sell art
+            </Link>
+          </div>
         ) : (
           sellerProducts.map((product) => {
             return (
@@ -81,6 +89,16 @@ const Wrapper = styled.section`
     text-align: center;
     letter-spacing: var(--letter-spacing-2);
     text-transform: capitalize;
+  }
+  .not-found {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding: 5rem 0;
+  }
+  .not-found .error {
+    margin-bottom: 1rem;
   }
   .grid__header,
   hr {

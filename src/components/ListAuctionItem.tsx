@@ -21,6 +21,9 @@ const ListAuctionItem: FC<ListAuctionItemProps> = ({
     endTime,
   },
 }) => {
+  const currentDate: Date = new Date();
+  console.log(typeof currentDate);
+  console.log(typeof endTime);
   return (
     <Wrapper>
       <div className="img-container">
@@ -47,9 +50,13 @@ const ListAuctionItem: FC<ListAuctionItemProps> = ({
         <div className="item__description">
           {description.substring(0, 60)}...
         </div>
-        <Link className="btn btn--secondary" to={`/gallery/${id}`}>
-          details
-        </Link>
+        {new Date(endTime) <= currentDate ? (
+          <span className="closed">closed</span>
+        ) : (
+          <Link className="btn btn--secondary" to={`/gallery/${id}`}>
+            details
+          </Link>
+        )}
       </div>
     </Wrapper>
   );
@@ -97,6 +104,8 @@ const Wrapper = styled.article`
     justify-content: center;
     justify-self: start;
   }
+  .closed {
+  }
   .counter--active,
   .counter--complete {
     display: inline-block;
@@ -108,6 +117,15 @@ const Wrapper = styled.article`
     color: #fff;
     letter-spacing: 1px;
     font-weight: 700;
+  }
+  .closed {
+    border: 1px solid #f8958c;
+    background-color: transparent;
+    color: #f8958c;
+    text-transform: uppercase;
+    padding: 0.25rem 1rem;
+    border-radius: 50px;
+    justify-self: start;
   }
   .counter--complete {
     background: #f8958c;

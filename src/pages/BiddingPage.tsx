@@ -83,10 +83,6 @@ const BiddingPage = () => {
                   className="form__input"
                   placeholder="Enter your bid..."
                   ref={bidAmount}
-                  // value={bidAmount}
-                  // onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  //   setBidAmount(Number(e.target.value))
-                  // }
                 />
                 <button
                   className="btn btn--secondary btn--block"
