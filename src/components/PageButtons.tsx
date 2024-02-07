@@ -14,9 +14,6 @@ const PageButtons: FC<PageButtonsProp> = ({
 }) => {
   return (
     <Wrapper className="page__buttons">
-      {/* <button className="prev__btn">
-        <FaChevronLeft />
-      </button> */}
       {pageList.map((page) => {
         return (
           <button
@@ -32,9 +29,6 @@ const PageButtons: FC<PageButtonsProp> = ({
           </button>
         );
       })}
-      {/* <button className="next__btn">
-        <FaChevronRight />
-      </button> */}
     </Wrapper>
   );
 };
