@@ -3,7 +3,7 @@ import { getUserFromLocalStorage } from "./helperFunctions";
 import { User } from "../features/user/userSlice";
 
 const customAxios: AxiosInstance = axios.create({
-  baseURL: "https://localhost:7224",
+  baseURL: "https://ateliergateway.azurewebsites.net/",
 });
 
 customAxios.interceptors.request.use(
