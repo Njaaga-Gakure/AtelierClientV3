@@ -7,7 +7,8 @@ type AuctionItemProps = {
 };
 
 const AuctionItem: FC<AuctionItemProps> = ({ auctionProduct }) => {
-  const { id, image, name } = auctionProduct;
+  const { id, image, name, endTime } = auctionProduct;
+  const currentDate: Date = new Date();
   return (
     <Wrapper>
       <img className="product__img" src={image} alt={name} />
@@ -15,9 +16,16 @@ const AuctionItem: FC<AuctionItemProps> = ({ auctionProduct }) => {
         <h5 className="product__name">{name}</h5>
       </div>
       <div className="product__footer">
-        <Link to={`/gallery/${id}`} className="btn btn--secondary product__btn">
-          more details
-        </Link>
+        {new Date(endTime) <= currentDate ? (
+          <span className="closed">closed</span>
+        ) : (
+          <Link
+            className="btn btn--secondary product__btn"
+            to={`/gallery/${id}`}
+          >
+            details
+          </Link>
+        )}
       </div>
     </Wrapper>
   );
@@ -53,5 +61,17 @@ const Wrapper = styled.article`
     width: 100%;
     text-align: center;
     transition: var(--transition);
+  }
+  .closed {
+    display: flex;
+    justify-content: center;
+    border: 1px solid #f8958c;
+    background-color: transparent;
+    color: #f8958c;
+    letter-spacing: var(--letter-spacing-2);
+    text-transform: uppercase;
+    padding: 0.25rem 1rem;
+    border-radius: 50px;
+    justify-self: start;
   }
 `;

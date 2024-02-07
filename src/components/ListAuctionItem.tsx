@@ -22,8 +22,6 @@ const ListAuctionItem: FC<ListAuctionItemProps> = ({
   },
 }) => {
   const currentDate: Date = new Date();
-  console.log(typeof currentDate);
-  console.log(typeof endTime);
   return (
     <Wrapper>
       <div className="img-container">
