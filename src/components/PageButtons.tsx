@@ -1,6 +1,5 @@
 import { type FC } from "react";
 import styled from "styled-components";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 type PageButtonsProp = {
   pageList: number[];
   handlePageChange: (page: number) => void;

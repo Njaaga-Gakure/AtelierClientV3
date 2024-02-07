@@ -22,7 +22,6 @@ const ListAuctionItem: FC<ListAuctionItemProps> = ({
     status,
   },
 }) => {
-  const currentDate: Date = new Date();
   return (
     <Wrapper>
       <div className="img-container">
