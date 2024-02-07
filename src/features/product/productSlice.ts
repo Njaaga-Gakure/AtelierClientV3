@@ -122,10 +122,7 @@ export const addProduct = createAsyncThunk(
   "products/addProduct",
   async (productRequest: AddProductRequest, thunkAPI) => {
     try {
-      const { data } = await customAxios.post(
-        "https://atelierproductservice.azurewebsites.net/api/product",
-        productRequest
-      );
+      const { data } = await customAxios.post("api/product", productRequest);
       console.log(data);
       return data;
     } catch (error) {
@@ -142,9 +139,7 @@ export const fetchAllProducts = createAsyncThunk(
   "products/getProducts",
   async (_, thunkAPI) => {
     try {
-      const { data } = await customAxios.get(
-        "https://atelierproductservice.azurewebsites.net/api/product/details"
-      );
+      const { data } = await customAxios.get("api/product/details");
       return data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -162,7 +157,7 @@ export const fetchFilteredProducts = createAsyncThunk<
 >("products/getFilteredProducts", async (_, thunkAPI) => {
   try {
     const { pageNumber, sort, category, search } = thunkAPI.getState().product;
-    let url: string = `https://atelierproductservice.azurewebsites.net/api/product?pageNumber=${pageNumber}&sort=${sort}&category=${category}`;
+    let url: string = `api/product?pageNumber=${pageNumber}&sort=${sort}&category=${category}`;
     if (search) {
       url = `${url}&search=${search}`;
     }
@@ -185,7 +180,7 @@ export const fetchSellerProducts = createAsyncThunk<
   try {
     const { sellerPageNumber } = thunkAPI.getState().product;
     const { data } = await customAxios.get(
-      `https://atelierproductservice.azurewebsites.net/api/product/seller-products?pageNumber=${sellerPageNumber}`
+      `api/product/seller-products?pageNumber=${sellerPageNumber}`
     );
     console.log(data);
     return data;
@@ -201,9 +196,7 @@ export const fetchSingleProduct = createAsyncThunk(
   "products/getSingleProduct",
   async (id: string, thunkAPI) => {
     try {
-      const { data } = await customAxios.get(
-        `https://atelierproductservice.azurewebsites.net/api/product/${id}`
-      );
+      const { data } = await customAxios.get(`api/product/${id}`);
       console.log(data);
       return data;
     } catch (error) {
