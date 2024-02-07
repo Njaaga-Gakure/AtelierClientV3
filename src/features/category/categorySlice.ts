@@ -35,7 +35,9 @@ export const getAllCategories = createAsyncThunk(
   "category/getCategories",
   async (_, thunkAPI) => {
     try {
-      const { data } = await customAxios.get("/api/category");
+      const { data } = await customAxios.get(
+        "https://ateliercategoryservice.azurewebsites.net/api/category"
+      );
       return data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
