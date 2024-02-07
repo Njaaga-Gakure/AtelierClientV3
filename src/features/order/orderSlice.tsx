@@ -33,11 +33,31 @@ type OrdersResponse = {
   orders: Order[];
 };
 
+type PaymentRequest = {
+  approvedURL: string;
+  cancelURL: string;
+  orderId: string;
+};
+
+type StripeResponse = {
+  stripeSessionURL: string;
+  stripeSessionId: string;
+  approvedURL: string;
+  cancelURL: string;
+  orderId: string;
+};
+
+type PaymentResponse = {
+  errorMessage: string;
+  stripeResponse: StripeResponse;
+};
+
 type OrderState = {
   isLoading: boolean;
   isError: boolean;
   orderCount: number;
   orders: Order[];
+  stripeSessionURL: string;
 };
 
 const initialState: OrderState = {
@@ -45,6 +65,7 @@ const initialState: OrderState = {
   isError: false,
   orderCount: 0,
   orders: [],
+  stripeSessionURL: "",
 };
 export const placeOrder = createAsyncThunk(
   "orders/placeOrder",
@@ -71,6 +92,24 @@ export const getPendingOrders = createAsyncThunk(
     try {
       const { data } = await customAxios.get(
         "https://atelierorderservice.azurewebsites.net/api/order"
+      );
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return thunkAPI.rejectWithValue(
+          error.response?.data.errorMessage || "An error occurred... :("
+        );
+      }
+    }
+  }
+);
+export const payment = createAsyncThunk(
+  "orders/payment",
+  async (paymentRequest: PaymentRequest, thunkAPI) => {
+    try {
+      const { data } = await customAxios.post(
+        "https://atelierorderservice.azurewebsites.net/api/order/payment",
+        paymentRequest
       );
       return data;
     } catch (error) {
@@ -112,6 +151,7 @@ export const orderSlice = createSlice({
       .addCase(getPendingOrders.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
+        state.stripeSessionURL = "";
       })
       .addCase(
         getPendingOrders.fulfilled,
@@ -124,6 +164,31 @@ export const orderSlice = createSlice({
       .addCase(getPendingOrders.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
+      })
+      .addCase(payment.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+        state.stripeSessionURL = "";
+      })
+      .addCase(
+        payment.fulfilled,
+        (state, action: PayloadAction<PaymentResponse>) => {
+          state.isLoading = false;
+          if (action.payload && action.payload.stripeResponse) {
+            console.log(action.payload.stripeResponse);
+            state.stripeSessionURL =
+              action.payload.stripeResponse.stripeSessionURL;
+          }
+        }
+      )
+      .addCase(payment.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        console.log(
+          typeof action.payload === "string"
+            ? action.payload
+            : "An error occurred"
+        );
       });
   },
 });

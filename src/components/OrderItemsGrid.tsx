@@ -4,13 +4,12 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Loading from "./Loading";
 import { priceFormatter } from "../utils/helperFunctions";
-import { getPendingOrders } from "../features/order/orderSlice";
+import { getPendingOrders, payment } from "../features/order/orderSlice";
 
 const OrderItemsGrid = () => {
   const dispatch = useAppDispatch();
-  const { isLoading, isError, orders, orderCount } = useAppSelector(
-    (store) => store.order
-  );
+  const { isLoading, isError, orders, orderCount, stripeSessionURL } =
+    useAppSelector((store) => store.order);
   useEffect(() => {
     dispatch(getPendingOrders());
   }, []);
@@ -67,7 +66,30 @@ const OrderItemsGrid = () => {
                 <span>order amount:</span>
                 {priceFormatter(order.orderAmount)}
               </p>
-              <button className="btn btn--secondary">pay</button>
+              {stripeSessionURL ? (
+                <a
+                  href={stripeSessionURL}
+                  className="stripe__btn btn btn--secondary"
+                >
+                  proceed to stripe
+                </a>
+              ) : (
+                <button
+                  onClick={() =>
+                    dispatch(
+                      payment({
+                        approvedURL: "https://www.google.com",
+                        cancelURL: "https://www.bing.com",
+                        orderId: order.id,
+                      })
+                    )
+                  }
+                  disabled={isLoading}
+                  className="btn btn--secondary"
+                >
+                  {isLoading ? <Loading /> : "pay"}
+                </button>
+              )}
             </div>
           );
         })}
@@ -130,6 +152,11 @@ const Wrapper = styled.section`
   .btn {
     display: inline-block;
     margin-top: 0.5rem;
+  }
+  .btn .spinner {
+    width: 20px;
+    height: 20px;
+    margin: 0;
   }
   @media (min-width: 800px) {
     .grid__header,

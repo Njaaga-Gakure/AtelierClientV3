@@ -7,8 +7,7 @@ type AuctionItemProps = {
 };
 
 const AuctionItem: FC<AuctionItemProps> = ({ auctionProduct }) => {
-  const { id, image, name, endTime } = auctionProduct;
-  const currentDate: Date = new Date();
+  const { id, image, name, status } = auctionProduct;
   return (
     <Wrapper>
       <img className="product__img" src={image} alt={name} />
@@ -16,7 +15,7 @@ const AuctionItem: FC<AuctionItemProps> = ({ auctionProduct }) => {
         <h5 className="product__name">{name}</h5>
       </div>
       <div className="product__footer">
-        {new Date(endTime) <= currentDate ? (
+        {status === "closed" ? (
           <span className="closed">closed</span>
         ) : (
           <Link

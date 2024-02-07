@@ -19,6 +19,7 @@ const ListAuctionItem: FC<ListAuctionItemProps> = ({
     category,
     currentHighestBid,
     endTime,
+    status,
   },
 }) => {
   const currentDate: Date = new Date();
@@ -48,7 +49,7 @@ const ListAuctionItem: FC<ListAuctionItemProps> = ({
         <div className="item__description">
           {description.substring(0, 60)}...
         </div>
-        {new Date(endTime) <= currentDate ? (
+        {status === "closed" ? (
           <span className="closed">closed</span>
         ) : (
           <Link className="btn btn--secondary" to={`/gallery/${id}`}>
