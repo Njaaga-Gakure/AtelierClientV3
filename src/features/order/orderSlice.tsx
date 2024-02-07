@@ -66,10 +66,12 @@ export const placeOrder = createAsyncThunk(
   }
 );
 export const getPendingOrders = createAsyncThunk(
-  "https://atelierorderservice.azurewebsites.net/orders/getPendingOrders",
+  "orders/getPendingOrders",
   async (_, thunkAPI) => {
     try {
-      const { data } = await customAxios.get("api/order");
+      const { data } = await customAxios.get(
+        "https://atelierorderservice.azurewebsites.net/api/order"
+      );
       return data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
