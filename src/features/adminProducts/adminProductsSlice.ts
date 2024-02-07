@@ -50,7 +50,8 @@ export const fetchAdminProducts = createAsyncThunk<
   { state: RootState }
 >("products/getAdminProducts", async (_, thunkAPI) => {
   try {
-    let url: string = "api/product";
+    let url: string =
+      "https://atelierproductservice.azurewebsites.net/api/product";
     const { data } = await customAxios.get(url);
     return data;
   } catch (error) {

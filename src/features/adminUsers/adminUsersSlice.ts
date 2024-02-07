@@ -26,7 +26,8 @@ const initialState: adminUsersState = {
   usersCount: 0,
   users: [],
 };
-const authBaseURL: string = "https://localhost:7295/api/auth";
+const authBaseURL: string =
+  "https://atelierauthservice.azurewebsites.net/api/auth";
 export const getAllUsers = createAsyncThunk(
   "user/getAllUsers",
   async (_, thunkAPI) => {
