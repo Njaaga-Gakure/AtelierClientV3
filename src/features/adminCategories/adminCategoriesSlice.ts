@@ -5,12 +5,22 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 import customAxios from "../../utils/axios";
+import { toast } from "react-toastify";
 
 export type Category = {
   id: string;
   name: string;
   image: string;
 };
+export type CategoryRequest = {
+  name: string;
+  image: string;
+};
+type AddCategoryResponse = {
+  errorMessage: string;
+  result: string;
+};
+
 type CategoryResponse = {
   errorMessage: string;
   count: number;
@@ -48,6 +58,24 @@ export const getAdminCategories = createAsyncThunk(
     }
   }
 );
+export const addCategory = createAsyncThunk(
+  "category/addCategories",
+  async (categoryRequest: CategoryRequest, thunkAPI) => {
+    try {
+      const { data } = await customAxios.post(
+        "https://ateliercategoryservice.azurewebsites.net/api/category",
+        categoryRequest
+      );
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return thunkAPI.rejectWithValue(
+          error.response?.data.errorMessage || "An Error Occurred :("
+        );
+      }
+    }
+  }
+);
 
 export const adminCategoriesSlice = createSlice({
   name: "category",
@@ -70,6 +98,25 @@ export const adminCategoriesSlice = createSlice({
       .addCase(getAdminCategories.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
+      })
+      .addCase(addCategory.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(
+        addCategory.fulfilled,
+        (state, action: PayloadAction<AddCategoryResponse>) => {
+          state.isLoading = false;
+          toast.success(action.payload.result);
+        }
+      )
+      .addCase(addCategory.rejected, (state, action) => {
+        state.isLoading = false;
+        toast.success(
+          typeof action.payload === "string"
+            ? action.payload
+            : "Something went wrong... :("
+        );
       });
   },
 });
