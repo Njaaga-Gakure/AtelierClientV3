@@ -58,13 +58,12 @@ export const placeBid = createAsyncThunk(
     }
   }
 );
-
 export const getUserBids = createAsyncThunk(
   "bid/getUserBids",
   async (_, thunkAPI) => {
     try {
       const { data } = await customAxios.get(
-        "https://atelierbidservice.azurewebsites.net/api/bid/bids"
+        "https://atelierbidservice.azurewebsites.net/api/bid"
       );
       return data;
     } catch (error) {
