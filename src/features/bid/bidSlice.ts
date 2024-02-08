@@ -6,6 +6,8 @@ import {
 import customAxios from "../../utils/axios";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { pageNumbers } from "../../utils/helperFunctions";
+import { RootState } from "../../store/store";
 
 type BidRequest = {
   productId: string;
@@ -36,6 +38,7 @@ type BidState = {
   isLoading: boolean;
   isError: boolean;
   bidCount: number;
+  pageNumber: number;
   userBids: Bid[];
 };
 
@@ -58,34 +61,41 @@ export const placeBid = createAsyncThunk(
     }
   }
 );
-export const getUserBids = createAsyncThunk(
-  "bid/getUserBids",
-  async (_, thunkAPI) => {
-    try {
-      const { data } = await customAxios.get(
-        "https://atelierbidservice.azurewebsites.net/api/bid"
+export const getUserBids = createAsyncThunk<
+  bidsResponse,
+  void,
+  { state: RootState }
+>("bid/getUserBids", async (_, thunkAPI) => {
+  try {
+    const { pageNumber } = thunkAPI.getState().bid;
+    const { data } = await customAxios.get(
+      `https://atelierbidservice.azurewebsites.net/api/bid?pageNumber=${pageNumber}`
+    );
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data.errorMessage || "An Error Occurred :("
       );
-      return data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return thunkAPI.rejectWithValue(
-          error.response?.data.errorMessage || "An Error Occurred :("
-        );
-      }
     }
   }
-);
+});
 
 const initialState: BidState = {
   isLoading: false,
   isError: false,
   bidCount: 0,
+  pageNumber: 1,
   userBids: [],
 };
 export const bidSlice = createSlice({
   name: "bid",
   initialState,
-  reducers: {},
+  reducers: {
+    changePage(state, action: PayloadAction<number>) {
+      state.pageNumber = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(placeBid.pending, (state) => {
@@ -126,3 +136,5 @@ export const bidSlice = createSlice({
       });
   },
 });
+
+export const { changePage } = bidSlice.actions;

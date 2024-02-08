@@ -9,10 +9,12 @@ import { placeOrder } from "../features/order/orderSlice";
 
 const BidItemsGrid = () => {
   const dispatch = useAppDispatch();
-  const { isLoading, isError, userBids } = useAppSelector((store) => store.bid);
+  const { isLoading, isError, userBids, pageNumber } = useAppSelector(
+    (store) => store.bid
+  );
   useEffect(() => {
     dispatch(getUserBids());
-  }, []);
+  }, [pageNumber]);
   if (isLoading) {
     return (
       <Wrapper>
@@ -101,7 +103,7 @@ const BidItemsGrid = () => {
 export default BidItemsGrid;
 
 const Wrapper = styled.section`
-  padding: 5rem 0;
+  padding: 5rem 0 2rem;
   .spinner {
     width: 40px;
     height: 40px;

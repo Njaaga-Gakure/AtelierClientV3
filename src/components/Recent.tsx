@@ -28,6 +28,8 @@ const Recent = () => {
           </Wrapper>
         ) : isError ? (
           <p className="error">something went wrong :(</p>
+        ) : allProducts.length === 0 ? (
+          <p className="not-found">no featured products yet... </p>
         ) : (
           <div className="recent__products">
             {allProducts.slice(0, 3).map((product) => {
@@ -55,6 +57,12 @@ const Wrapper = styled.section`
   }
   .error {
     margin-top: 15rem;
+    text-align: center;
+    letter-spacing: var(--letter-spacing-2);
+    text-transform: capitalize;
+  }
+  .not-found {
+    margin: 5rem 0;
     text-align: center;
     letter-spacing: var(--letter-spacing-2);
     text-transform: capitalize;
