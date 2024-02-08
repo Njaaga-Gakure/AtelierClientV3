@@ -6,7 +6,6 @@ import {
 import customAxios from "../../utils/axios";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { pageNumbers } from "../../utils/helperFunctions";
 import { RootState } from "../../store/store";
 
 type BidRequest = {
