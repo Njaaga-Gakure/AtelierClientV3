@@ -5,6 +5,7 @@ import { useAppSelector, useAppDispatch } from "../store/hooks";
 import { getAllUsers } from "../features/adminUsers/adminUsersSlice";
 import { Loading } from ".";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const AdminUsersTable = () => {
   const dispatch = useAppDispatch();
@@ -48,10 +49,16 @@ const AdminUsersTable = () => {
               <td data-cell="email">{user.email}</td>
               <td data-cell="phone number">{user.phoneNumber}</td>
               <td data-cell="actions" className="table__buttons">
-                <button className="table__btn table__edit">
+                <button
+                  onClick={() => toast.warning("under development")}
+                  className="table__btn table__edit"
+                >
                   <AiOutlineEdit />
                 </button>
-                <button className="table__btn table__delete">
+                <button
+                  onClick={() => toast.warning("under development")}
+                  className="table__btn table__delete"
+                >
                   <FaTrashCan />
                 </button>
               </td>

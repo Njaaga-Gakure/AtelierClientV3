@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { fetchAdminProducts } from "../features/adminProducts/adminProductsSlice";
 import { Loading } from ".";
 import { priceFormatter } from "../utils/helperFunctions";
+import { toast } from "react-toastify";
 
 const AdminProductsTable = () => {
   const dispatch = useAppDispatch();
@@ -59,10 +60,16 @@ const AdminProductsTable = () => {
                 {priceFormatter(product.currentHighestBid)}
               </td>
               <td data-cell="actions" className="table__buttons">
-                <button className="table__btn table__edit">
+                <button
+                  onClick={() => toast.warning("under development")}
+                  className="table__btn table__edit"
+                >
                   <AiOutlineEdit />
                 </button>
-                <button className="table__btn table__delete">
+                <button
+                  onClick={() => toast.warning("under development")}
+                  className="table__btn table__delete"
+                >
                   <FaTrashCan />
                 </button>
               </td>
